@@ -1,0 +1,13 @@
+name: Wikipedia_Word_Cloud
+title: Wikipedia_Word_Cloud
+username:
+account: yannapps
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 6312579
+bundleId: 5931059
+url: https://yannapps.shinyapps.io/Wikipedia_Word_Cloud/
+when: 1653176290.6347
+lastSyncTime: 1653176290.6347
+asMultiple: FALSE
+asStatic: FALSE
