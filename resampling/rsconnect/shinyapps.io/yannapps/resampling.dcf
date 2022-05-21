@@ -1,0 +1,14 @@
+name: resampling
+title: resampling
+username:
+account: yannapps
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 6177884
+bundleId: 5904591
+url: https://yannapps.shinyapps.io/resampling/
+when: 1652479698.60402
+lastSyncTime: 1652479698.60402
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: www/gif
