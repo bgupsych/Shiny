@@ -1,7 +1,3 @@
-# works.
-# needs a lot more customazation
-"https://shiny.rstudio.com/images/shiny-cheatsheet.pdf"
-
 library(shiny);library(DT)
 library(colourpicker);library(shinydashboard)
 library(tidyverse);library(shinythemes)
@@ -14,23 +10,31 @@ t <- function(page,language="en",bg_color="white",
               min_freq=0,max_freq=NULL,
               remove_pattern="[:punct:]",
               remove_words=NULL,
-              word_length=c(1,30)){
+              word_length=c(1,30),
+              more_content=T){
 
   page <- page %>% str_replace_all(" ","_") %>% str_to_title()
 
   # IF none mentioned, remove all these words:
   fr.es_remove=c("su fue una como o mas al Más ha para no sus elle los À ne À si e ser uso sin ce qui'il Apr Ã s comme cette a han ya e esto estan D'un este esta  ellas ellos lo son avec aux se por Ã y el il par sur sa ses qui que en es un con las del de la et le les en des a du dans sont ou est pour un au une pas ont")
-  en_remove=c("he will who more have because into can hi her then so do about what been him but may being this its had has which there these such than due were their also is not or are if it be the an at from as after who they had by for that with were the of and in to a his on was")
-  remove_words_null = str_to_title(unlist(str_split(c(fr.es_remove,en_remove),pattern=" ")))
+  en_remove=c("he will who more have because into can then so do about what been him but may being this its had has which there these such than due were their also is not or are if it be the an at from as after who they had by for that with were the of and in to a his on was")
+  he_remove=c(" זה זו היה הייתה היתה כמו החל אשר הוא של על את עם אם כי וגם גם אולי או ידי בין היא לאחר אחרי בגלל כדי")
+  remove_words_null = str_to_title(unlist(str_split(c(fr.es_remove,en_remove,he_remove),pattern=" ")))
   if(is.null(remove_words)){
     remove_words=remove_words_null
   } else {remove_words=c(str_to_title(unlist(str_split(remove_words,pattern=" "))),
                          remove_words_null )}
   # ELSE, remove the words mentioned.
   # Data mining from wikipedia
+
+  # Take all content from wiki page
+  node="#bodyContent"
+  if(!more_content){
+    node="p"
+  }
   web_link <- paste(c("https://"),language,c(".wikipedia.org/wiki/"),page,sep = "")
 
-  raw_text=rvest::read_html(web_link) %>% rvest::html_nodes("p") %>%
+  raw_text=rvest::read_html(web_link) %>% rvest::html_nodes(node) %>%
     rvest::html_text()
   # Data cleanining
   clean.text <- str_to_title(str_remove_all(
@@ -85,29 +89,31 @@ ui <- navbarPage(
                                      # Basic features in the Word Cloud tab:
                                      textInput("pagew",
                                                "Value:",
-                                               value = "Covid",
+                                               value = "פייסבוק",
                                                placeholder = "e.g Machine learning"),
 
                                      selectInput("shapec","Shape",choices = c("circle","cardioid",
                                                                               "star","pentagon","diamond",
                                                                               "triangle",
                                                                               "triangle-forward")),
+                                     checkboxInput("content","WORD BOOST",T),
 
 tags$hr(),
                                      # Advanced features in the Word Cloud tab:
 
-                                     checkboxInput("advanced","Advanced",F),
+                                     checkboxInput("advanced","More Options",F),
 
                                      conditionalPanel("input.advanced",
 
                                                       radioButtons("lang","Select language",
-                                                                   choices = c("English"="en",
+                                                                   choices = c("Hebrew"="he",
+                                                                     "English"="en",
                                                                                "Español"="es",
                                                                                "French"="fr",
                                                                                "Português"="pt",
                                                                                "Italiano"="it",
                                                                                "Deutsch"="de",
-                                                                               "Dutch (nl)"="nl"),selected = "en"),
+                                                                               "Dutch (nl)"="nl"),selected = "he"),
                                                       sliderInput("range",
                                                                   label = "Word Frequancy Range:",
                                                                   min = 1, max = 100, value = c(0, 100),step = 1),
@@ -178,7 +184,8 @@ server <- function(input, output,session) {
         min_freq=input$range[1],
         max_freq=input$range[2]+1,
         word_length = input$wrdln,
-        remove_words=input$rmwrds
+        remove_words=input$rmwrds,
+        more_content = input$content
       )
 
   })
