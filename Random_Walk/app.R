@@ -3,7 +3,7 @@ library(glue)
 library(shiny)
 library(DT)
 library(plotly)
-# fix max steps since it goes beyond defined max (floor argument is not enough in
+# Create basic RW function
 wonder <- function(n_steps,start,
                    step_probability=rep(1/4,4),
                    step_size=rep(1,4),
