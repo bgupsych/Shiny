@@ -1,0 +1,13 @@
+name: Random_Walk
+title: Random_Walk
+username:
+account: yannapps
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 6427978
+bundleId: 5994271
+url: https://yannapps.shinyapps.io/Random_Walk/
+when: 1654816455.09012
+lastSyncTime: 1654816455.09012
+asMultiple: FALSE
+asStatic: FALSE
